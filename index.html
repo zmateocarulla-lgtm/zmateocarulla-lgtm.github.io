@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zhen Mateo Carulla — Law & Business</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================
+       CSS VARIABLES & RESET
+    =========================== */
+    :root {
+      --ink:        #0d0d0d;
+      --paper:      #f5f2ec;
+      --gold:       #b8922a;
+      --gold-light: #d4ae5a;
+      --muted:      #6b6457;
+      --line:       rgba(13,13,13,0.12);
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --mono:       'DM Mono', monospace;
+      --sans:       'Instrument Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ===========================
+       NOISE TEXTURE OVERLAY
+    =========================== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ===========================
+       NAVIGATION
+    =========================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(245,242,236,0.92);
+      backdrop-filter: blur(12px);
+      border-color: var(--line);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--ink);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: var(--paper);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.4s ease forwards;
+    }
+    .mobile-menu a:nth-child(1) { animation-delay: 0.05s; }
+    .mobile-menu a:nth-child(2) { animation-delay: 0.1s; }
+    .mobile-menu a:nth-child(3) { animation-delay: 0.15s; }
+    .mobile-menu a:nth-child(4) { animation-delay: 0.2s; }
+    .mobile-menu a:nth-child(5) { animation-delay: 0.25s; }
+
+    /* ===========================
+       HERO
+    =========================== */
+    #hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      padding-top: 5rem;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 4rem 3rem 4rem 2.5rem;
+      border-right: 1px solid var(--line);
+      position: relative;
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.35s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-desc {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 34ch;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 0.25rem;
+      width: fit-content;
+      transition: gap 0.3s, color 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.65s forwards;
+    }
+    .hero-cta:hover { gap: 1.25rem; color: var(--gold); border-color: var(--gold); }
+    .hero-cta-arrow { font-size: 0.9rem; }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8rem 2.5rem 4rem 3rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.5s forwards;
+    }
+
+    .stat-item {
+      border-top: 1px solid var(--line);
+      padding-top: 1.25rem;
+    }
+
+    .stat-number {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .hero-langs {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.7s forwards;
+    }
+
+    .lang-tag {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lang-tag:hover { border-color: var(--gold); color: var(--gold); }
+    .lang-tag.native { border-color: var(--ink); color: var(--ink); }
+
+    /* Decorative vertical line */
+    .hero-vline {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: var(--line);
+      display: none; /* handled by grid border */
+    }
+
+    /* ===========================
+       SECTION COMMONS
+    =========================== */
+    section {
+      padding: 7rem 2.5rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    /* ===========================
+       ABOUT / PROPOSITION
+    =========================== */
+    #about {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .about-statement {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .about-statement strong {
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .about-body {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    /* ===========================
+       EXPERIENCE
+    =========================== */
+    #experience {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 1fr 2.5fr 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--line);
+      align-items: start;
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .exp-item:last-child { border-bottom: 1px solid var(--line); }
+
+    .exp-date {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding-top: 0.2rem;
+    }
+
+    .exp-role {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .exp-org {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .exp-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .exp-type {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: right;
+      padding-top: 0.2rem;
+    }
+
+    /* ===========================
+       AWARDS
+    =========================== */
+    #awards {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .award-card {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s;
+    }
+    .award-card:hover { background: rgba(184,146,42,0.04); }
+    .award-card:nth-child(3),
+    .award-card:nth-child(6) { border-right: none; }
+
+    .award-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .award-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+
+    .award-issuer {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .award-desc {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ===========================
+       SKILLS SECTION
+    =========================== */
+    #skills {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+    }
+
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .skill-list li {
+      font-size: 0.88rem;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .skill-list li::before {
+      content: '—';
+      color: var(--line);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+    }
+
+    /* ===========================
+       EDUCATION
+    =========================== */
+    #education {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .edu-card {
+      padding: 2.5rem;
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .edu-card:hover { border-color: var(--gold-light); }
+
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .edu-card:hover::before { opacity: 1; }
+
+    .edu-years {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .edu-degree {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+
+    .edu-school {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .edu-grade {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .edu-grade-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ===========================
+       MOBILITY STRIP
+    =========================== */
+    .mobility-strip {
+      background: var(--ink);
+      padding: 3rem 2.5rem;
+      overflow: hidden;
+    }
+
+    .mobility-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .mobility-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .mobility-places {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .place-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .place-city {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: #f5f2ec;
+    }
+
+    .place-detail {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: rgba(245,242,236,0.4);
+    }
+
+    /* ===========================
+       CONTACT
+    =========================== */
+    #contact {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-headline {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-headline em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .contact-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      transition: background 0.25s, color 0.25s;
+    }
+    .contact-link:hover { background: var(--ink); color: var(--paper); }
+    .contact-link.gold-btn { background: var(--gold); border-color: var(--gold); color: white; }
+    .contact-link.gold-btn:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* ===========================
+       ANIMATIONS
+    =========================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===========================
+       RESPONSIVE — TABLET
+    =========================== */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { border-right: none; border-bottom: 1px solid var(--line); padding: 3rem 1.5rem 3rem; }
+      .hero-right { padding: 3rem 1.5rem; }
+      .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 1.5rem; }
+      .stat-item { flex: 1; min-width: 120px; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .awards-grid { grid-template-columns: 1fr 1fr; }
+      .award-card:nth-child(3) { border-right: 1px solid var(--line); }
+      .award-card:nth-child(2),
+      .award-card:nth-child(4) { border-right: none; }
+      .skills-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .edu-grid { grid-template-columns: 1fr; }
+
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .exp-type { text-align: left; }
+
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      section { padding: 5rem 1.5rem; }
+    }
+
+    /* ===========================
+       RESPONSIVE — MOBILE
+    =========================== */
+    @media (max-width: 600px) {
+      .awards-grid { grid-template-columns: 1fr; }
+      .award-card { border-right: none; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .hero-langs { gap: 0.5rem; }
+      .mobility-places { gap: 1.5rem; }
+      .contact-headline { font-size: 2.2rem; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-note { text-align: center; }
+    }
+
+    /* ===========================
+       TV / LARGE SCREEN
+    =========================== */
+    @media (min-width: 1800px) {
+      body { font-size: 18px; }
+      nav, section, .mobility-inner, #about, #experience, #awards, #skills, #education, #contact {
+        max-width: 1600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">Z. M. Carulla</a>
+    <ul class="nav-links">
+      <li><a href="#about">Profile</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#awards">Awards</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="closeMobile()">Profile</a>
+    <a href="#education" onclick="closeMobile()">Education</a>
+    <a href="#experience" onclick="closeMobile()">Experience</a>
+    <a href="#skills" onclick="closeMobile()">Skills</a>
+    <a href="#awards" onclick="closeMobile()">Awards</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <p class="hero-tag">Law · Business · International</p>
+      <h1 class="hero-name">Zhen<br><em>Mateo</em><br>Carulla</h1>
+      <p class="hero-desc">
+        Law &amp; Economics student at Universitat Pompeu Fabra. Focused on business law and international transactions — combining legal rigour with quantitative and business analysis skills.
+      </p>
+      <a href="#contact" class="hero-cta">
+        Get in touch <span class="hero-cta-arrow">→</span>
+      </a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">8.52<span style="font-size:0.55em;color:var(--muted)">/10</span></div>
+          <div class="stat-label">Double Bachelor Average · BBA &amp; Law · UPF</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Languages · Catalan · Spanish · English C2 · Chinese B1</div>
+        </div>
+      </div>
+      <div class="hero-langs">
+        <span class="lang-tag native">Catalan</span>
+        <span class="lang-tag native">Spanish</span>
+        <span class="lang-tag">English C2</span>
+        <span class="lang-tag">Chinese B1</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Profile</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-statement">
+        A law and business student who understands the numbers behind the contract — with the leadership and negotiation skills to act on them.
+      </div>
+      <div class="about-body">
+        <p>
+          I am pursuing a double degree in Law and Business Administration at UPF — ranked #1 in Spain and #4 in Europe for business. My focus is business law: corporate governance, contracts, and international commercial transactions.
+        </p>
+        <p>
+          I bring a quantitative dimension rare among law students: proficiency in R, Stata and Excel, with a solid foundation in business administration and market analysis. This allows me to read the economic reality behind a legal document, not just its text.
+        </p>
+        <p>
+          I have built my track record through competitive debate, moot court, and legal clinic work — combining precision argumentation, structured drafting, and real client interaction from early in my studies. I also hold exposure to international environments across four countries, including a stay in Shanghai.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Education</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-years">2023 — 2029</div>
+        <div class="edu-degree">BBA &amp; Bachelor of Law</div>
+        <div class="edu-school">Universitat Pompeu Fabra · Barcelona<br><span style="font-size:0.78rem;color:var(--gold)">#1 in Spain · #4 in Europe (Business)</span></div>
+        <div class="edu-grade">8.52</div>
+        <div class="edu-grade-label">Double Bachelor Average (out of 10) · Top 10% of the Class</div>
+        <div style="margin-top:1.5rem; font-size:0.8rem; color:var(--muted); line-height:1.6;">
+          ELSA Law Association · UPF Legal Clinic · Equipo Europa MEU · Rhetorica Debate Club · Deba't.org
+        </div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-years">2021 — 2023</div>
+        <div class="edu-degree">A-Levels in Social Sciences</div>
+        <div class="edu-school">Jesuïtes Bellvitge · L'Hospitalet de Llobregat</div>
+        <div class="edu-grade">9.81</div>
+        <div class="edu-grade-label">Final Grade (out of 10) · Magna Cum Laude — First of the Class</div>
+        <div style="margin-top:1.5rem; font-size:0.8rem; color:var(--muted); line-height:1.6;">
+          PAU University Access Exams · <span style="color:var(--gold);font-weight:500;">Grade: 13.389 / 14</span> · Distinction by the Generalitat de Catalunya (Catalonia's Government)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Experience</h2>
+    </div>
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-date">09 / 2025 — Present</div>
+        <div>
+          <div class="exp-role">Secretary General</div>
+          <div class="exp-org">UPF Legal Clinic</div>
+          <div class="exp-desc">Managing case attribution and external relations with law firms and defendants. Coordinating the legal aid structure of one of Spain's leading university clinical programmes.</div>
+        </div>
+        <div class="exp-type">Legal Practice</div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">07 / 2024 — Present</div>
+        <div>
+          <div class="exp-role">VP Marketing</div>
+          <div class="exp-org">ELSA Barcelona-UPF</div>
+          <div class="exp-desc">Designing and executing communication strategies for the European Law Students' Association at UPF. Responsible for membership growth and brand positioning of legal activities including the EBMCC Moot Court.</div>
+        </div>
+        <div class="exp-type">Leadership · Legal</div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">10 / 2024 — 02 / 2025</div>
+        <div>
+          <div class="exp-role">Teacher of Debate &amp; Public Speaking</div>
+          <div class="exp-org">Barcelona School of Management, BSM-UPF</div>
+          <div class="exp-desc">Delivered practical training in legal argumentation and public speaking to Master's Degree students. Designed curriculum and conducted hands-on workshops.</div>
+        </div>
+        <div class="exp-type">Teaching</div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">06 / 2024 — 01 / 2025</div>
+        <div>
+          <div class="exp-role">Director of Tournaments &amp; Members</div>
+          <div class="exp-org">Rhetorica Club, UPF</div>
+          <div class="exp-desc">Coordinated the full organisational structure of competitive debate leagues at university level. Managed a team of volunteers and ensured quality of competition standards.</div>
+        </div>
+        <div class="exp-type">Management</div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">01 / 2023 — 07 / 2024</div>
+        <div>
+          <div class="exp-role">English Teacher</div>
+          <div class="exp-org">Picadilly School, L'Hospitalet</div>
+          <div class="exp-desc">Taught English from A2 to C1 CEFR levels to students aged 12–30. Developed structured lesson plans adapted to different learning objectives.</div>
+        </div>
+        <div class="exp-type">Teaching</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AWARDS -->
+  <section id="awards">
+    <div class="section-header reveal">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Recognition</h2>
+    </div>
+    <div class="awards-grid">
+
+      <div class="award-card reveal">
+        <div class="award-title">Best MEP — General &amp; TRAN Committee</div>
+        <div class="award-issuer">BMEUP · Equipo Europa · May 2024</div>
+        <div class="award-desc">Awarded twice at the Barcelona Model of the European Parliament. Represented MEP Cláudia Monteiro de Aguiar (EPP) in the Transport &amp; Tourism Committee.</div>
+      </div>
+
+      <div class="award-card reveal">
+        <div class="award-title">Best Speaker — UPF Debate League 2024</div>
+        <div class="award-issuer">Universitat Pompeu Fabra · Feb 2024</div>
+        <div class="award-desc">Individual prize for outstanding oratory and argumentation skills across the university debate competition.</div>
+      </div>
+
+      <div class="award-card reveal">
+        <div class="award-title">Best Team — Economics Debate</div>
+        <div class="award-issuer">UPF Debate League · Feb 2024</div>
+        <div class="award-desc">Team prize in the economics category together with Lluís Adan and Àlex Mas, demonstrating command of economic reasoning in debate.</div>
+      </div>
+
+      <div class="award-card reveal">
+        <div class="award-title">Champion — 1st Rhetorica League</div>
+        <div class="award-issuer">Rhetorica Club · Nov 2023</div>
+        <div class="award-desc">Inaugural edition championship with team formed by Jordi Bravo, Pol Florencio and Àlex Mas.</div>
+      </div>
+
+      <div class="award-card reveal">
+        <div class="award-title">Honourable Mention — PAU Exams</div>
+        <div class="award-issuer">Generalitat de Catalunya · 2023</div>
+        <div class="award-desc">Distinction for exceptional performance in university entrance examinations. Score: 13.389/14.</div>
+      </div>
+
+      <div class="award-card reveal">
+        <div class="award-title">Participation — ELSA EBMCC Moot Court</div>
+        <div class="award-issuer">ELSA Barcelona · Feb 2024</div>
+        <div class="award-desc">IP Law fictional case competition. Trained by Baker McKenzie and Vidal-Quadras Ramon law firms alongside Alexandre Höfer and Biel Serrano.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Skills</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="reveal">
+        <div class="skill-group-title">Legal</div>
+        <ul class="skill-list">
+          <li>Business &amp; Corporate Law</li>
+          <li>IP Law (Moot Court)</li>
+          <li>Legal Clinic Practice</li>
+          <li>Legal Drafting</li>
+          <li>EU Law &amp; Institutions</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-title">Quantitative</div>
+        <ul class="skill-list">
+          <li>R (Statistical computing)</li>
+          <li>Stata (Econometrics)</li>
+          <li>Excel (Advanced)</li>
+          <li>Market analysis</li>
+          <li>Economics modelling</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-title">Communication</div>
+        <ul class="skill-list">
+          <li>Competitive Debate</li>
+          <li>Public Speaking</li>
+          <li>Legal Argumentation</li>
+          <li>Negotiation</li>
+          <li>Teaching &amp; Coaching</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-title">International</div>
+        <ul class="skill-list">
+          <li>International mobility (4 countries)</li>
+          <li>China market exposure</li>
+          <li>EU Parliament dynamics</li>
+          <li>Erasmus+ experience</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOBILITY STRIP -->
+  <div class="mobility-strip">
+    <div class="mobility-inner">
+      <div class="mobility-label">International<br>Mobility</div>
+      <div class="mobility-places">
+        <div class="place-item">
+          <div class="place-city">Shanghai</div>
+          <div class="place-detail">Mandarin · 2025</div>
+        </div>
+        <div class="place-item">
+          <div class="place-city">Vancouver</div>
+          <div class="place-detail">English C2 · 2023</div>
+        </div>
+        <div class="place-item">
+          <div class="place-city">Singapore</div>
+          <div class="place-detail">Chinese B1 · 2022</div>
+        </div>
+        <div class="place-item">
+          <div class="place-city">Helsinki</div>
+          <div class="place-detail">Erasmus+ · 2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-headline reveal">
+      Let's <em>work</em><br>together
+    </div>
+    <p class="contact-sub reveal">
+      Open to internships, practice group collaborations, and academic opportunities<br>
+      in business law, M&amp;A, and international transactions.
+    </p>
+    <div class="contact-links reveal">
+      <a href="mailto:zmateocarulla@gmail.com" class="contact-link gold-btn">
+        ✉ Email
+      </a>
+      <a href="https://www.linkedin.com/in/zhenmc/" target="_blank" rel="noopener" class="contact-link">
+        LinkedIn →
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Zhen Mateo Carulla</div>
+    <div class="footer-note">
+      Law &amp; Business · UPF Barcelona · Barcelona, Spain<br>
+      © 2025 — All rights reserved
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // --- Navbar scroll effect ---
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // --- Mobile menu ---
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // --- Scroll reveal ---
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Stagger children of the same parent
+          const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, idx * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
