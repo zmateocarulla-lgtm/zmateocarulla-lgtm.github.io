@@ -158,10 +158,10 @@
     .hero-left {
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 4rem 3rem 4rem 2.5rem;
-      border-right: 1px solid var(--line);
+      justify-content: center;
+      padding: 4rem 3.5rem 4rem 2.5rem;
       position: relative;
+      border-right: 1px solid var(--line);
     }
 
     .hero-tag {
@@ -170,18 +170,18 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 2rem;
+      margin-bottom: 1.75rem;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
     }
 
     .hero-name {
       font-family: var(--serif);
-      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-size: clamp(3.25rem, 6.5vw, 6rem);
       font-weight: 300;
       line-height: 0.95;
       letter-spacing: -0.01em;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       opacity: 0;
       animation: fadeUp 0.9s ease 0.35s forwards;
     }
@@ -196,8 +196,8 @@
       font-size: 0.9rem;
       line-height: 1.7;
       color: var(--muted);
-      max-width: 34ch;
-      margin-bottom: 3rem;
+      max-width: 38ch;
+      margin-bottom: 2.5rem;
       opacity: 0;
       animation: fadeUp 0.9s ease 0.5s forwards;
     }
@@ -222,51 +222,49 @@
     .hero-cta:hover { gap: 1.25rem; color: var(--gold); border-color: var(--gold); }
     .hero-cta-arrow { font-size: 0.9rem; }
 
-    .hero-right {
+    .hero-meta {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--line);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 8rem 2.5rem 4rem 3rem;
+      gap: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.8s forwards;
     }
 
-    .hero-photo-wrap {
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto 2.5rem;
-      overflow: hidden;
+    /* Right column: full-bleed, full-height photo */
+    .hero-right {
       position: relative;
-      aspect-ratio: 3 / 4;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.4s forwards;
+      overflow: hidden;
+      margin-top: -5rem; /* cancel hero padding-top so photo touches the very top */
     }
 
     .hero-photo {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 25%;
+      object-position: center 22%;
       display: block;
-      filter: grayscale(8%) contrast(1.02);
-      transition: filter 0.5s;
+      filter: grayscale(10%) contrast(1.02);
+      transition: filter 0.6s;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.3s forwards;
     }
-    .hero-photo:hover { filter: grayscale(0%) contrast(1.05); }
+    .hero-right:hover .hero-photo { filter: grayscale(0%) contrast(1.05); }
 
     .hero-stats {
       display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.5s forwards;
+      gap: 3rem;
     }
 
     .stat-item {
-      border-top: 1px solid var(--line);
-      padding-top: 1.25rem;
+      flex-shrink: 0;
     }
 
     .stat-number {
       font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       font-weight: 300;
       line-height: 1;
       color: var(--ink);
@@ -274,19 +272,18 @@
 
     .stat-label {
       font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-top: 0.4rem;
+      margin-top: 0.5rem;
+      max-width: 22ch;
     }
 
     .hero-langs {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.7s forwards;
     }
 
     .lang-tag {
@@ -301,16 +298,6 @@
     }
     .lang-tag:hover { border-color: var(--gold); color: var(--gold); }
     .lang-tag.native { border-color: var(--ink); color: var(--ink); }
-
-    /* Decorative vertical line */
-    .hero-vline {
-      position: absolute;
-      top: 0; bottom: 0;
-      left: 50%;
-      width: 1px;
-      background: var(--line);
-      display: none; /* handled by grid border */
-    }
 
     /* ===========================
        SECTION COMMONS
@@ -757,6 +744,11 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -771,9 +763,10 @@
        RESPONSIVE — TABLET
     =========================== */
     @media (max-width: 900px) {
-      #hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { border-right: none; border-bottom: 1px solid var(--line); padding: 3rem 1.5rem 3rem; }
-      .hero-right { padding: 3rem 1.5rem; }
+      #hero { grid-template-columns: 1fr; min-height: auto; padding-top: 4.5rem; }
+      .hero-left { border-right: none; border-bottom: 1px solid var(--line); padding: 3rem 1.5rem 3rem; order: 2; }
+      .hero-right { padding: 0; margin-top: 0; order: 1; height: 60vh; min-height: 360px; max-height: 520px; }
+      .hero-photo { object-position: center 20%; }
       .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 1.5rem; }
       .stat-item { flex: 1; min-width: 120px; }
 
@@ -859,27 +852,29 @@
       <a href="#contact" class="hero-cta">
         Get in touch <span class="hero-cta-arrow">→</span>
       </a>
+
+      <div class="hero-meta">
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">8.52<span style="font-size:0.55em;color:var(--muted)">/10</span></div>
+            <div class="stat-label">Double Bachelor Average · BBA &amp; Law · UPF</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Languages spoken</div>
+          </div>
+        </div>
+        <div class="hero-langs">
+          <span class="lang-tag native">Catalan</span>
+          <span class="lang-tag native">Spanish</span>
+          <span class="lang-tag">English C2</span>
+          <span class="lang-tag">Chinese B1</span>
+        </div>
+      </div>
     </div>
+
     <div class="hero-right">
-      <div class="hero-photo-wrap">
-        <img src="mateo.JPG" alt="Zhen Mateo Carulla" class="hero-photo" />
-      </div>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <div class="stat-number">8.52<span style="font-size:0.55em;color:var(--muted)">/10</span></div>
-          <div class="stat-label">Double Bachelor Average · BBA &amp; Law · UPF</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">4</div>
-          <div class="stat-label">Languages · Catalan · Spanish · English C2 · Chinese B1</div>
-        </div>
-      </div>
-      <div class="hero-langs">
-        <span class="lang-tag native">Catalan</span>
-        <span class="lang-tag native">Spanish</span>
-        <span class="lang-tag">English C2</span>
-        <span class="lang-tag">Chinese B1</span>
-      </div>
+      <img src="mateo.JPG" alt="Zhen Mateo Carulla" class="hero-photo" />
     </div>
   </section>
 
